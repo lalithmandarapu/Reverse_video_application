@@ -1,18 +1,19 @@
 from flask import Flask, request, jsonify, send_file, send_from_directory
 import os
-from reverse_video import reverse_video  # Make sure this file exists
+from reverse_video import reverse_video  # Ensure this function exists
 
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "uploads"
 OUTPUT_FOLDER = "outputs"
 
+# Create necessary folders
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 @app.route('/')
 def index():
-    return send_from_directory('static', 'index.html')
+    return send_from_directory('static', 'index.html')  # Ensure static/index.html exists
 
 @app.route('/process-video', methods=['POST'])
 def process_video():
@@ -20,9 +21,13 @@ def process_video():
         return jsonify({"error": "No video file provided"}), 400
 
     video_file = request.files['video']
-    filename = video_file.filename
-    input_path = os.path.join(UPLOAD_FOLDER, filename)
-    output_path = os.path.join(OUTPUT_FOLDER, f"reversed_{filename}")
+
+    # Use fixed filename
+    input_filename = "sample.mp4"
+    output_filename = "reversed_sample.mp4"
+
+    input_path = os.path.join(UPLOAD_FOLDER, input_filename)
+    output_path = os.path.join(OUTPUT_FOLDER, output_filename)
 
     try:
         video_file.save(input_path)
