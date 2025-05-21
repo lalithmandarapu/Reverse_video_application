@@ -4,6 +4,12 @@ from scipy.io import wavfile
 import moviepy.editor as mp
 import os
 import time
+from moviepy.config import change_settings
+
+# ✅ Set the path to your FFmpeg binary (adjust if needed)
+change_settings({
+    "FFMPEG_BINARY": r"D:/Projects/Reverse-Video-Application-main/ffmpeg-7.1.1/ffmpeg-7.1.1/bin/ffmpeg.exe"
+})
 
 def reverse_video(input_path, output_path):
     timestamp = str(int(time.time()))
