@@ -1,86 +1,130 @@
-# Reverse Video App
+# Reverse Video Web Application
 
-## Overview
+A Flask-based web application that lets users upload a video, reverses its video and audio, and allows downloading the reversed output.
 
-The **Reverse Video App** allows users to upload a video, which is then processed to create a reversed version of the video. The application utilizes a Flask backend with Python for video processing, and a responsive frontend built with HTML, CSS, and JavaScript.
+---
 
-## Features
+##  Project Structure
 
-- Upload a video file for reversal.
-- Process the video on the server side.
-- Play the reversed video directly in the browser.
-- Responsive design suitable for various devices.
+```
+Reverse-Video-Application/
+├── app.py
+├── reverse_video.py
+├── requirements.txt
+├── uploads/
+├── outputs/
+├── static/
+│   └── index.html
+├── ffmpeg/
+│   └── ffmpeg.exe (optional, if using custom path)
+```
 
-## Technologies Used
+---
 
-- **Frontend:** 
-  - HTML
-  - CSS
-  - JavaScript
-- **Backend:**
-  - Flask (Python)
-- **Video Processing:**
-  - OpenCV for video frame manipulation
-  - MoviePy for audio handling and video writing
-- **Other Libraries:**
-  - NumPy for numerical operations
+##  Features
 
-## Installation
+- Upload `.mp4` videos from your browser
+- Reverses both video frames and audio
+- Downloads the processed video with reversed content
+- Temporary files are auto-deleted
+- Cross-platform support (Windows tested)
 
-### Prerequisites
+---
 
-- Python 3.x installed on your machine.
-- Required Python packages (listed in `requirements.txt`).
-- Ensure you have the necessary libraries for video processing.
+##  Requirements
 
-### Clone the Repository
+Make sure you have Python 3.7+ installed.  
+Install all required packages:
 
-bash
-git clone https://github.com/Sathwik9418/reverse-video-app.git
-cd reverse-video-app
+```bash
+pip install -r requirements.txt
+```
 
+**requirements.txt**
+```
+moviepy
+opencv-python
+numpy
+scipy
+```
 
-### Set Up the Backend
+---
 
-1. Create a virtual environment (optional but recommended):
+##  FFMPEG Setup (Important)
 
-   bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use venv\Scripts\activate
-   
+If `moviepy` complains about missing ffmpeg, do one of the following:
 
-2. Install the required Python packages:
+### Option 1: Let moviepy handle it automatically
 
-   bash
-   pip install -r requirements.txt
-   
+It should work out of the box.
 
-### Run the Application
+### Option 2: Use your own ffmpeg binary
 
-1. Start the Flask server:
+If you have a local ffmpeg installed (like in this path):
 
-   bash
-   python app.py
-   
+```
+D:\Projects\Reverse-Video-Application-main\ffmpeg-7.1.1\ffmpeg-7.1.1\ffbuild\bin
+```
 
-2. Open your browser and navigate to `http://localhost:5000` to access the app.
+Update your Python script (`reverse_video.py`) to set the path:
 
-## How It Works
+```python
+import os
+os.environ["IMAGEIO_FFMPEG_EXE"] = r"D:\Projects\Reverse-Video-Application-main\ffmpeg-7.1.1\ffmpeg-7.1.1\ffbuild\bin\ffmpeg.exe"
+```
 
-1. **File Upload:**
-   - Users can upload a video file through a web form. The file input is styled to enhance user experience.
+---
 
-2. **Video Processing:**
-   - Upon submission, the video file is sent to the backend where it is temporarily saved.
-   - The `reverse_video` function is invoked, which performs the following:
-     - Extracts audio from the uploaded video (if present).
-     - Reads and reverses the video frames using OpenCV.
-     - Reverses the extracted audio using the `scipy.io.wavfile` library, if applicable.
-     - Combines the reversed video and audio using MoviePy and saves the final output.
+##  Running the App
 
-3. **Result Display:**
-   - The reversed video is then sent back to the frontend, where it is displayed in a video player for the user to watch.
+1. Activate your virtual environment (optional but recommended):
 
-## Contributing
+```bash
+venv\Scripts\activate  # For Windows
+```
 
-Contributions are welcome! If you have suggestions or improvements, feel free to open an issue or submit a pull request.
+2. Run the Flask app:
+
+```bash
+python app.py
+```
+
+3. Open your browser and go to:  
+   `http://127.0.0.1:5000/`
+
+---
+
+##  Usage
+
+1. Choose a `.mp4` file.
+2. Click "Upload and Process".
+3. The reversed video will be downloaded automatically.
+
+---
+
+##  Clean-Up
+
+Temporary audio and video files are deleted after processing, so your disk stays clean.
+
+---
+
+##  Output
+
+The processed reversed file is saved temporarily in the `outputs/` folder and served to the user as a download.
+
+---
+
+##  Troubleshooting
+
+- **moviepy not found?** → Run: `pip install moviepy`
+- **ffmpeg not working?** → Set the `IMAGEIO_FFMPEG_EXE` environment variable
+- **Permission denied?** → Try running the terminal as admin
+
+---
+
+##  Credits
+
+- Flask – web framework
+- OpenCV – video frame processing
+- MoviePy – audio extraction and video output
+- NumPy & SciPy – audio manipulation
